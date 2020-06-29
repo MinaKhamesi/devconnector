@@ -1,0 +1,4 @@
+{
+    "mongoURI":"mongodb+srv://mina123:mina123@cluster0-mmbdd.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    "jwtSecret":"ThisIsMySecretMinMin123456"
+}
