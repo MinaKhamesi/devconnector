@@ -3,6 +3,7 @@ const {body,validationResult} = require('express-validator');
 const auth = require('../../middleware/auth');
 const Profile = require('./../../models/Profile');
 const User = require('../../models/User');
+const Post  = require('../../models/Post');
 
 const router = express.Router();
 
@@ -37,7 +38,7 @@ router.post('/',[auth,[
   }
     const {status,skills,location,website,company,bio,githubusername,youtube,facebook,linkedin,twitter,instagram} = req.body
     const userId = req.user.id
-    
+    try {
     //check if optional fields exist and add them to an object
     const profileField = {}
 
@@ -60,7 +61,7 @@ router.post('/',[auth,[
     if (instagram) profileField.social.instagram = instagram;
     if (youtube) profileField.social.youtube = youtube;
     
-    try {
+    
         let profile = await Profile.findOne({user:userId});
         
         if(profile){
@@ -123,8 +124,8 @@ router.get('/user/:user_id',async(req,res)=>{
 //@acces    private
 router.delete('/',auth,async(req,res)=>{
     try {
-        //@todo remove posts
-
+        // remove posts
+        await Post.deleteMany({ user: req.user.id})
         //remove profile
         await Profile.findOneAndDelete({user:req.user.id});
 

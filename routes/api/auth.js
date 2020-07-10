@@ -9,8 +9,8 @@ const User = require('./../../models/User');
 const router = express.Router();
 
 //@GET     /api/auth
-//desc     test
-//@access  public
+//desc     check if user is verified-constantly-(token of the user)
+//@access  private
 router.get('/',auth,async (req,res)=>{
     try {
         const user = await User.findById(req.user.id).select('-password');
