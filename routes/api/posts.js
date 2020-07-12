@@ -53,7 +53,7 @@ router.get('/',auth,async(req,res)=>{
 })
 
 //route     GET api/posts/:post_id
-//desc      delete a post
+//desc      get a post by id
 //access    private
 router.get('/:post_id',auth,async(req,res)=>{
     try {
@@ -177,7 +177,7 @@ router.post('/comment/:id',[auth,
 })
 
 //@route    DELETE  /api/posts/comment/:post_id/:comment_id
-//desc     delete a post
+//desc     delete a comment
 //@access  private
 router.delete('/comment/:post_id/:comment_id',auth,async (req,res)=> {
   try {

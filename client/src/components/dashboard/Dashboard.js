@@ -14,7 +14,7 @@ function Dashboard({getProfileInfo,deleteAccount,profile:{profile,loading},auth:
 
     useEffect(()=>{
         getProfileInfo()
-    },[]);
+    },[getProfileInfo]);
 
     return loading && profile===null ? <Spinner/> : (
         <Fragment>

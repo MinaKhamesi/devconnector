@@ -13,6 +13,15 @@ export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 export const CREATE_PROFILE = 'CREATE_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const PROFILES_LOADED = 'PROFILES_LOADED';
+export const POSTS_LOADED = 'POSTS_LOADED';
+export const POST_LOADED = 'POST_LOADED';
+export const POST_ERR = 'POST_ERR';
+export const POST_CREATED = 'POST_CREATED';
+export const POST_DELETED = 'POST_DELETED';
+export const LIKE_UPDATED = 'LIKE_UPDATED';
+export const COMMENT_UPDATED = 'COMMENT_UPDATED';
+
+
 
 
 

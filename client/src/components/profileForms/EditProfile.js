@@ -38,7 +38,7 @@ const EditProfile = ({createProfile,getProfileInfo,profile:{loading,profile},isA
             youtube: loading || !profile.social ? '' : profile.social.youtube,
             instagram: loading || !profile.social ? '' : profile.social.instagram   
         })  
-    }, [loading])
+    }, [loading,profile,getProfileInfo])
 
     const onChange = e =>{
         setFormData({...formData,[e.target.name]:e.target.value})

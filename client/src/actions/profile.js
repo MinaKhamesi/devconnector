@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {setAlert} from './alert';
-import {PROFILE_LOADED, PROFILE_ERR,CREATE_PROFILE,UPDATE_PROFILE,PROFILES_LOADED} from './index';
+import {PROFILE_LOADED, PROFILE_ERR,CREATE_PROFILE,UPDATE_PROFILE,PROFILES_LOADED, CLEAR_PROFILE} from './index';
 
 
 //get current user's profile
@@ -25,6 +25,7 @@ export const getAllProfiles = () =>async dispatch=>{
 
 //get a profile by id
 export const getProfileById = userId =>async dispatch=>{
+    dispatch({type:CLEAR_PROFILE})
     try {
         const res = await axios.get(`/api/profile/user/${userId}`);
         dispatch({type:PROFILE_LOADED,payload:res.data});

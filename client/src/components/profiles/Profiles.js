@@ -6,9 +6,12 @@ import {connect} from 'react-redux';
 import {getAllProfiles} from '../../actions/profile';
 
 const Profiles = ({getAllProfiles,profile:{profiles,loading}}) => {
+
     useEffect(()=>{
         getAllProfiles();
-    },[])
+    },[getAllProfiles])
+
+    
     return ( loading ? <Spinner/> :
         <Fragment>
             <h1 className="large text-primary">

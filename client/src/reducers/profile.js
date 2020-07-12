@@ -28,6 +28,8 @@ export default function(state=initialState,action){
         case PROFILE_ERR:
             return {
                 ...state,
+                profile:null,
+                repos:[],
                 error:payload,
                 loading:false
             }
