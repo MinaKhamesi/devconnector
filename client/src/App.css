@@ -300,6 +300,7 @@ body {
 a {
   text-decoration: none;
   color: #17a2b8;
+  margin-bottom: 3px;
 }
 ul {
   list-style: none;
@@ -307,6 +308,7 @@ ul {
 img {
   width: 100%;
 }
+
 .navbar {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -338,11 +340,14 @@ img {
 .navbar a:hover {
   color: #17a2b8;
 }
+
 .landing {
+  height: 100vh;
   position: relative;
   background: url('./image/landing.jpg') no-repeat center center/cover;
-  height: 100vh;
+  object-fit: cover;
 }
+
 .landing-inner {
   color: #fff;
   display: -webkit-box;
@@ -430,6 +435,7 @@ img {
   -ms-flex-align: center;
   align-items: center;
   text-align: center;
+  flex-wrap: wrap;
 }
 .profile-grid .profile-exp {
   -ms-grid-row: 3;
@@ -502,18 +508,16 @@ img {
   text-align: center;
 }
 
-.post .Actions{
-  position:absolute;
-  bottom:0.5rem;
-  right:0.5rem;
-}
-.post img {
-  width: 150px;
-}
-.post span{
+.post > div:nth-child(2) > span{
   color:#777;
   font-size: 0.8rem;
 }
+
+
+.post img {
+  width: 150px;
+}
+
 
 @media (max-width: 700px) {
   .hide-sm {
@@ -560,11 +564,16 @@ img {
   .profile-grid {
     grid-template-areas: 'top' 'about' 'exp' 'edu' 'github';
   }
+  
+  
   .profile-about .skills {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+  }
+  .profile-grid .profile-top img {
+    width: 200px;
   }
   .post {
     -ms-grid-columns: 1fr;

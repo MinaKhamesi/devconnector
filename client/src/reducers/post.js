@@ -1,4 +1,4 @@
-import {POSTS_LOADED, POST_LOADED, POST_ERR, POST_CREATED,POST_DELETED,LIKE_UPDATED, COMMENT_UPDATED} from '../actions';
+import {POSTS_LOADED, POST_LOADED, POST_ERR, POST_CREATED,POST_DELETED,LIKE_UPDATED, COMMENT_UPDATED,POST_CLEARED} from '../actions';
 const initialState = {
     post:null,
     posts:[],
@@ -49,6 +49,13 @@ export default function(state=initialState,action){
                 ...state,
                 post:null,
                 error:payload
+            }
+        case POST_CLEARED:
+            return {
+                ...state,
+                post:null,
+                posts:[],
+                loading:false
             }
         default:
             return state

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL,LOGOUT,CLEAR_PROFILE, PROFILE_ERR } from ".";
+import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL,LOGOUT,CLEAR_PROFILE, PROFILE_ERR, POST_CLEARED } from ".";
 import {setAlert} from './alert';
 import setTokenHeader from '../utils/setTokenHeader';
 
@@ -18,6 +18,7 @@ export const loadUser = () => async dispatch =>{
 
 
 export const register =  (formData) => async dispatch=>{
+    dispatch(logout());
     const config = {headers:{'Content-Type':'application/json'}};
     const body = JSON.stringify(formData);
     try {
@@ -34,6 +35,7 @@ export const register =  (formData) => async dispatch=>{
 }
 
 export const login =  (formData) => async dispatch=>{
+    dispatch(logout());
     const config = {headers:{'Content-Type':'application/json'}};
     const body = JSON.stringify(formData);
     try {
@@ -50,6 +52,7 @@ export const login =  (formData) => async dispatch=>{
 }
 
 export const logout = ()=>dispatch=>{
+    dispatch({type:POST_CLEARED})
     dispatch({type:CLEAR_PROFILE})
     dispatch({type: LOGOUT})
 }

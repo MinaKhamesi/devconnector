@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {setAlert} from './alert';
-import {PROFILE_LOADED, PROFILE_ERR,CREATE_PROFILE,UPDATE_PROFILE,PROFILES_LOADED, CLEAR_PROFILE} from './index';
+import {PROFILE_LOADED,REPOS_LOADED, REPOS_ERR, PROFILE_ERR,CREATE_PROFILE,UPDATE_PROFILE,PROFILES_LOADED, CLEAR_PROFILE} from './index';
 
 
 //get current user's profile
@@ -34,7 +34,15 @@ export const getProfileById = userId =>async dispatch=>{
     }
 }
 
-//@todo GET Github Repos
+//@todo GET Github Repos API GET /api/profile/github/:username
+export const getGithubRepos = username => async dispatch=>{
+    try {
+        const res = await axios.get(`/api/profile/github/${username}`);
+        dispatch({type:REPOS_LOADED,payload:res.data});
+    } catch (err) {
+        dispatch({type: REPOS_ERR,payload:{msg:err.response.statusText, status:err.response.status}})
+    }
+}
 
 //create/edit profile
 export const createProfile = (formData,history,edit=false) =>async dispatch=>{

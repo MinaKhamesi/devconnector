@@ -25,7 +25,7 @@ const PostItem = ({post:{text,name,user,avatar,likes,comments,date,_id}, current
                             <i className="fas fa-thumbs-down"></i> 
                         </button>
                         <Link to={`/post/${_id}`} className='btn btn-primary'>Discussion{comments.length>0 && <span>{'  '}{comments.length}</span>}</Link>
-                        {currentUser && currentUser._id===user && <button className='btn btn-danger' style={{fontFamily:'inherit'}} onClick={e=>deletePost(_id)}>Delete</button>}
+                        {currentUser && currentUser._id===user && <button className='btn btn-danger' style={{fontFamily:'inherit'}} onClick={e=>deletePost(_id)}><i className='fas fa-times'></i></button>}
                     </div>
                     
                 </div>

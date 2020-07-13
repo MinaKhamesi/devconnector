@@ -17,7 +17,7 @@ const PostElement = ({post:{user,name,date,text,avatar,_id},isComment=false,curr
                 <div>
                     <p className="my-1">{text}</p>
                     <span><Moment fromNow>{date}</Moment></span>
-                    {isComment && currentUser===user && <div className="Actions"><button className='btn btn-danger' onClick={e=>deleteComment(postId,_id)}>Delete</button></div>}
+                    {isComment && currentUser===user && <div className="Actions"><button className='btn btn-danger' onClick={e=>deleteComment(postId,_id)}><i className="fas fa-times"></i></button></div>}
                 </div>
             </div>
     )

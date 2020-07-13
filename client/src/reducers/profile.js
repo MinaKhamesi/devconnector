@@ -1,4 +1,4 @@
-import {PROFILE_LOADED,PROFILE_ERR,CLEAR_PROFILE,CREATE_PROFILE, UPDATE_PROFILE,PROFILES_LOADED} from '../actions';
+import {PROFILE_LOADED,PROFILE_ERR,CLEAR_PROFILE,CREATE_PROFILE, UPDATE_PROFILE,PROFILES_LOADED, REPOS_LOADED,REPOS_ERR} from '../actions';
 const initialState ={
     profile:null,
     profiles:[],
@@ -18,13 +18,27 @@ export default function(state=initialState,action){
                 profile:payload,
                 loading:false
             }
+        case REPOS_LOADED:
+            return{
+                ...state,
+                repos:payload,
+                loading:false
+            }
         case PROFILES_LOADED:
             return{
                 ...state,
                 profiles:payload,
+                profile:null,
+                repos:[],
                 loading:false
             }
-
+        case REPOS_ERR:
+            return{
+                ...state,
+                repos:[],
+                error:payload,
+                loading:false
+            }
         case PROFILE_ERR:
             return {
                 ...state,
@@ -36,6 +50,7 @@ export default function(state=initialState,action){
         case CLEAR_PROFILE:
             return {
                 ...state,
+                profiles:[],
                 profile:null,
                 repos:[],
                 loading:false

@@ -23,7 +23,8 @@ const Profile = ({profile:{profile,loading},match,getProfileById,currentUser}) =
                 <ProfileAbout profile={profile}/>
                 <ProfileExperience experiences={profile.experience}/>
                 <ProfileEducation educations={profile.education}/>
-                <ProfileGithub repos={profile.repos}/>
+                {profile.githubusername && <ProfileGithub githubusername={profile.githubusername}/>}
+                
             </div>
         </Fragment>
     )
