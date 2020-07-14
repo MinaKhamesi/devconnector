@@ -117,6 +117,61 @@ router.get('/:id',auth,async(req,res)=>{
     }
 })
 
+//@ROUTE      PUT '/api/groups/:group_id/addmembersbyemail RETURn members
+//@DESC       add members by email(if group is private only by admin)
+//@access     Private
+router.put('/addmembersbyemail/:id',[auth,[
+    body('emails','No email Is Selected').not().isEmpty(),
+]],async(req,res)=>{
+    const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  try {
+      const emailList = req.body.emails.split(',').map(email=>email.trim());
+      const group = await Group.findById(req.params.id);
+      if(!group){
+          return res.status(404).json({msg:'Group Not Found.'})
+      }
+
+      if( !group.public && group.admin != req.user.id ){
+          return res.status(401).json({msg:'Not Authorized. only admin can add members to private groups.'})
+      }
+
+
+      emailList.forEach(async(email)=>{
+          try {
+              const user = await User.findOne({email});
+              if(!user){
+                  return res.status(401).json({msg:'User Not Found.'})
+              }
+
+              isAlreadyInGroup = user.groups.filter(group=>group._id==req.params.id).length!=0 || group.members.indexOf(user._id)!=-1
+
+              if(!isAlreadyInGroup){
+                  user.groups.unshift({_id:req.params.id});
+                  group.members.unshift(user._id);
+                  console.log(user._id);
+                  await user.save()
+              }
+        
+          } catch (err) {
+              console.log(err.message)
+              return res.status(500).send('Server Error')
+          }
+      })
+
+
+    await group.save();
+    res.json(group.members)
+      
+  } catch (err) {
+      console.log(err.message);
+      res.status(500).send('Server Error')
+  }
+})
+
 //@ROUTE       PUT '/api/groups/:group_id/addmembers'/ RETURN group.member
 //@DESC        add a member or a list of members(only by admin if group is private)
 //@access      PRIVATE
