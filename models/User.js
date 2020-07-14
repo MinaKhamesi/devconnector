@@ -18,6 +18,12 @@ const UserSchema = new Schema({
     avatar:{
         type: String
     },
+    groups:[{
+        group:{
+            type:Schema.Types.ObjectId,
+            ref: 'group'
+        }}
+    ],
     date:{
         type: Date,
         default: Date.now
