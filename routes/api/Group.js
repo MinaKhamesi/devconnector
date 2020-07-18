@@ -152,7 +152,6 @@ router.put('/addmembersbyemail/:id',[auth,[
               if(!isAlreadyInGroup){
                   user.groups.unshift({_id:req.params.id});
                   group.members.unshift(user._id);
-                  console.log(user._id);
                   await user.save()
               }
         
