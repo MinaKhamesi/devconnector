@@ -7,6 +7,8 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERROR = 'AUTH_ERROR';
+export const USERS_LOADED = 'USERS_LOADED';
+export const USERS_LOAD_ERR = 'USERS_LOAD_ERR';
 export const PROFILE_LOADED = 'PROFILE_LOADED';
 export const REPOS_LOADED = 'REPOS_LOADED';
 export const REPOS_ERR = 'REPOS_ERR';
@@ -24,9 +26,13 @@ export const LIKE_UPDATED = 'LIKE_UPDATED';
 export const COMMENT_UPDATED = 'COMMENT_UPDATED';
 export const POST_CLEARED = 'POST_CLEARED';
 export const GROUPS_LOADED = 'GROUPS_LOADED';
+export const GROUP_LOADED = 'GROUP_LOADED';
 export const GROUP_ERR = 'GROUP_ERR';
 export const MEMBERS_UPDATED_GROUPS = 'MEMBERS_UPDATED_GROUPS';
+export const MEMBERS_UPDATED = 'MEMBERS_UPDATED';
 export const GROUP_REMOVED = 'GROUP_REMOVED';
+export const GROUP_CREATED = 'GROUP_CREATED';
+export const BLOCKLIST_UPDATED = 'BLOCKLIST_UPDATED';
 
 
 

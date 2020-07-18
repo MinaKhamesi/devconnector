@@ -5,7 +5,7 @@ import Moment from 'react-moment';
 import {connect} from 'react-redux';
 import {likePost,unlikePost,deletePost} from '../../actions/post';
 
-const PostItem = ({post:{text,name,user,avatar,likes,comments,date,_id}, currentUser, likePost,unlikePost,deletePost}) => {
+const PostItem = ({post:{text,name,user,avatar,likes,comments,date,_id}, currentUser, likePost,unlikePost,deletePost,groupId=null}) => {
     return (
         <div className="post bg-white my-1 p-1">
                     <div>
@@ -24,7 +24,7 @@ const PostItem = ({post:{text,name,user,avatar,likes,comments,date,_id}, current
                         <button className="btn" onClick={e=>unlikePost(_id)}>
                             <i className="fas fa-thumbs-down"></i> 
                         </button>
-                        <Link to={`/post/${_id}`} className='btn btn-primary'>Discussion{comments.length>0 && <span>{'  '}{comments.length}</span>}</Link>
+                        <Link to={groupId? `/post/${groupId}/${_id}` : `/post/${_id}`} className='btn btn-primary'>Discussion{comments.length>0 && <span>{'  '}{comments.length}</span>}</Link>
                         {currentUser && currentUser._id===user && <button className='btn btn-danger' style={{fontFamily:'inherit'}} onClick={e=>deletePost(_id)}><i className='fas fa-times'></i></button>}
                     </div>
                     

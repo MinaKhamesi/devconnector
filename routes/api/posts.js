@@ -210,7 +210,7 @@ router.delete('/comment/:post_id/:comment_id',auth,async (req,res)=> {
 ///GROUPS:
 
 //@route    POST  /api/posts/groups/:group_id
-//desc     create a post in a group
+//desc     create a post in a group.only members can post on a group
 //@access  private
 router.post('/groups/:id',[auth,
     body('text','text content is required').notEmpty()
@@ -225,12 +225,12 @@ router.post('/groups/:id',[auth,
     const group = await Group.findById(req.params.id);
     
     if(!group || !user){
-        return res.status(404).json({msg:'Post or User is Invalid'})
+        return res.status(404).json({errors:[{msg:'Post or User is Invalid'}]})
     }
 
     isUserAMember = group.members.indexOf(req.user.id)!=-1;
     if(!isUserAMember){
-        return res.status(401).json({ msg:'Not Authorized. Only members are allowed to post on a group'})
+        return res.status(401).json({errors:[{ msg:'Not Authorized. Only members are allowed to post on a group'}]})
     }
   const postField = {
       text:req.body.text,
@@ -251,13 +251,17 @@ router.post('/groups/:id',[auth,
 })
 
 //route     GET api/posts/groups/:group_id
-//desc      get all posts of a group
+//desc      get all posts of a group.only members are allowed to see posts
 //access    private
 router.get('/groups/:id',auth,async(req,res)=>{
     try {
+        const group = await Group.findById(req.params.id);
         const posts = await Post.find({group:req.params.id}).sort({date:-1});
         if(!posts){
             return res.status(404).json({msg:'No Post Found'})
+        }
+        if(group.members.indexOf(req.user.id)===-1){
+            return res.status(401).json({msg:'You are Not a member of this group.'})
         }
         res.json(posts)
 

@@ -1,8 +1,9 @@
-import { REGISTER_FAIL,REGISTER_SUCCESS,USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL, LOGOUT } from "../actions";
+import { REGISTER_FAIL,REGISTER_SUCCESS,USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL, LOGOUT, USERS_LOADED, USERS_LOAD_ERR } from "../actions";
 
 const initialState = {
     token:localStorage.getItem('token'),
     user:null,
+    users:[],
     isAuthenticated:null,
     loading:true
 }
@@ -23,6 +24,20 @@ export default function(state=initialState, action){
                 loading: false,
                 isAuthenticated:true,
                 user:payload
+            }
+
+        case USERS_LOADED:
+            return{
+                ...state,
+                users:payload,
+                loading:false
+            }
+            
+        case USERS_LOAD_ERR:
+            return{
+                ...state,
+                users:[],
+                loading:false
             }
 
         case REGISTER_FAIL:

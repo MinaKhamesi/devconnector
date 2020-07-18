@@ -523,14 +523,17 @@ img {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
-.group-buttons a {
-  margin: 3px;
-}
+
 .group {
   font-size: 1rem;
 }
 .group img {
   width: 150px;
+}
+.group-links a,
+.group-links div{
+  width: 100%;
+  text-align:center;
 }
 @media (max-width: 700px) {
   .hide-sm {
@@ -594,5 +597,14 @@ img {
   .group{
     -ms-grid-columns: 1fr;
     grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .group img{
+    text-align: center;
+    margin: 0 auto;
+  }
+  .group-buttons .btn{
+    display: block;
+    width: 100%;
   }
 }
