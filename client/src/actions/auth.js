@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL,LOGOUT,CLEAR_PROFILE, PROFILE_ERR, POST_CLEARED } from ".";
+import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL,LOGOUT,CLEAR_PROFILE, PROFILE_ERR, POST_CLEARED,USERS_LOADED, USERS_LOAD_ERR } from ".";
 import {setAlert} from './alert';
 import setTokenHeader from '../utils/setTokenHeader';
 
@@ -70,6 +70,16 @@ export const deleteAccount = ()=> async dispatch => {
         }
     }
     
+}
+
+export const getAllUsers = ()=> async dispatch =>{
+    try {
+        const res = await axios.get('/api/users');
+        dispatch({type:USERS_LOADED,payload:res.data})
+    } catch (err) {
+        dispatch({type:USERS_LOAD_ERR});
+        console.log(err.response)
+    }
 }
     
     
