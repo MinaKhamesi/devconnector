@@ -86,15 +86,21 @@ export const addMembers = (members,groupId,history) => async dispatch=>{
         dispatch({type: GROUP_ERR,payload:{msg: err.response.statusText, status: err.response.status}});
     }
 }
+
+
+
 //delete members   API:DELETE '/api/groups/:group_id/deletemembers'/ RETURN group.member
-export const deleteMembers = (users,groupId,history) => async dispatch=>{
+export const deleteMembers = (users,groupId,history=null) => async dispatch=>{
     try {
         console.log(users)
         const config = {headers:{'Content-Type':'application/json'}}
         const res = await axios.put(`/api/groups/deletemembers/${groupId}`,users,config);
         dispatch({type:MEMBERS_UPDATED,payload:res.data});
         dispatch(setAlert('Users Removed.','success'))
-        history.push(`/groups/${groupId}`);
+        if(history){
+            history.push(`/groups/${groupId}`);
+        }
+        
     } catch (err) {
         const errors = err.response.data.errors
         if(errors){
@@ -105,13 +111,17 @@ export const deleteMembers = (users,groupId,history) => async dispatch=>{
 }
 
 //block users     API:PUT '/api/groups/blockusers/:group_id'/ RETURN group.blockList
-export const blockMembers = (members,groupId,history) => async dispatch=>{
+export const blockMembers = (members,groupId,history=null) => async dispatch=>{
     try {
         const config = {headers:{'Content-Type':'application/json'}}
         const res = await axios.put(`/api/groups/blockusers/${groupId}`,members,config);
-        dispatch({type:BLOCKLIST_UPDATED,payload:res.data});
+        dispatch({type:BLOCKLIST_UPDATED,payload:res.data.blockList});
+        dispatch({type:MEMBERS_UPDATED,payload:res.data.members})
         dispatch(setAlert('Users Blocked.','success'))
-        history.push(`/groups/${groupId}`);
+        if(history){
+            history.push(`/groups/${groupId}`);
+        }
+        
     } catch (err) {
         const errors = err.response.data.errors
         if(errors){
@@ -124,13 +134,17 @@ export const blockMembers = (members,groupId,history) => async dispatch=>{
 
 //unblock users    API:PUT '/api/groups/unblockusers/:group_id'/ RETURN group.blockList
 
-export const unblockMembers = (members,groupId,history) => async dispatch=>{
+export const unblockMembers = (members,groupId,history=null) => async dispatch=>{
     try {
         const config = {headers:{'Content-Type':'application/json'}}
         const res = await axios.put(`/api/groups/unblockusers/${groupId}`,members,config);
-        dispatch({type:BLOCKLIST_UPDATED,payload:res.data});
+        dispatch({type:BLOCKLIST_UPDATED,payload:res.data.blockList});
+        dispatch({type:MEMBERS_UPDATED,payload:res.data.members})
         dispatch(setAlert('Users Unblocked.','success'))
-        history.push(`/groups/${groupId}`);
+        if(history){
+            history.push(`/groups/${groupId}`);
+        }
+        
     } catch (err) {
         const errors = err.response.data.errors
         if(errors){
@@ -177,3 +191,26 @@ export const getUsersGroups = () => async dispatch =>{
         dispatch({type:GROUP_ERR,payload:{msg:err.response.statusText,status:err.response.status}})
     }
 }
+
+
+//add by email API:  PUT '/api/groups/addmembersbyemail/:group_id 
+//export const addByEmail = (emails,groupId,history) => async dispatch=>{
+ //   try {
+ //       console.log(emails);
+ //       console.log(groupId);
+ //       const config = {headers:{'Content-Type':'application/json'}};
+ //       const res = await axios.put(`/api/groups/addmembersbyemail/${groupId}`,emails,config)
+  //      dispatch({type:MEMBERS_UPDATED,payload:res.data})
+    //    dispatch(setAlert('Users Added','success'))
+      //  history.push(`/groups/${groupId}`);
+   // } catch (err) {
+     //   const errors = err.response.data.errors
+       // if(errors){
+         //   errors.forEach(
+           //     err => dispatch(setAlert(err.msg,'danger'))
+           // )
+       // }
+       // dispatch({type:GROUP_ERR, payload:{msg:err.response.statusText,status:err.response.status}})
+   // }
+//}
+

@@ -85,59 +85,67 @@ router.get('/:id',auth,async(req,res)=>{
 
 
 
-//@ROUTE      PUT '/api/groups/:group_id/addmembersbyemail RETURn members
+//@ROUTE      PUT '/api/groups/addmembersbyemail/:group_id RETURn members
 //@DESC       add members by email(if group is private only by admin)
 //@access     Private
-router.put('/addmembersbyemail/:id',[auth,[
-    body('emails','No email Is Selected').not().isEmpty(),
-]],async(req,res)=>{
-    const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
+//router.put('/addmembersbyemail/:id',[auth,[
+//    body('emails','No email Is Selected').not().isEmpty(),
+//]],async(req,res)=>{
+ //   console.log('add by email end point')
+  //  const errors = validationResult(req);
+ // if (!errors.isEmpty()) {
+   // return res.status(422).json({ errors: errors.array() });
+  //}
 
-  try {
-      const emailList = req.body.emails.split(',').map(email=>email.trim());
-      const group = await Group.findById(req.params.id);
-      if(!group){
-          return res.status(404).json({msg:'Group Not Found.'})
-      }
-
-      if( !group.public && group.admin != req.user.id ){
-          return res.status(401).json({msg:'Not Authorized. only admin can add members to private groups.'})
-      }
-
-
-      emailList.forEach(async(email)=>{
-          try {
-              const user = await User.findOne({email});
-              if(!user){
-                  return res.status(401).json({msg:'User Not Found.'})
-              }
-
-              isAlreadyInGroup = user.groups.filter(group=>group._id==req.params.id).length!=0 || group.members.indexOf(user._id)!=-1
-
-              if(!isAlreadyInGroup){
-                  user.groups.unshift({_id:req.params.id});
-                  group.members.unshift(user._id);
-                  await user.save()
-              }
-        
-          } catch (err) {
-              console.log(err.message)
-              return res.status(500).send('Server Error')
-          }
-      })
-
-
-    await group.save();
-    res.json(group.members)
+  //try {
+  //    const emailList = req.body.emails.split(',').map(email=>email.trim());
+  //    const group = await Group.findById(req.params.id);
+  //    if(!group){
+   //       return res.status(404).json({msg:'Group Not Found.'})
+   //   }
       
-  } catch (err) {
-      console.log(err.message);
-      res.status(500).send('Server Error')
-  }
-})
+   //   if( !group.public && group.admin != req.user.id ){
+   //       return res.status(401).json({msg:'Not Authorized. only admin can add members to private groups.'})
+   //   }
+      
+   //   const users = await User.find({email:{$in:emailList}})
+      //see if any of emails is not valid:
+     // console.log(users);
+      //see if any of the users is already in group:
+
+      //get id of the users to add to group.members
+
+     // for(let i=0;i<emailList.length;i++){
+     //     const email = emailList[i];
+     //     try {
+     //       const user = await User.find({email});
+     //       if(user.length===0){
+     //           return res.status(404).json({errors:[{msg:'User Not Found'}]})
+       //     }
+
+     //       isAlreadyInGroup = user.groups.filter(group=>group._id==req.params.id).length!=0 || group.members.indexOf(user._id)!=-1
+
+       //     if(!isAlreadyInGroup){
+       //         user.groups.unshift({_id:req.params.id});
+       //         await user.save()
+       //     group.members.unshift(user._id);
+       //     }
+      
+      //  } catch (err) {
+      //      console.log(err.message)
+      //      return res.status(500).send('Server Error')
+       // }
+     // }
+
+    
+    //await group.save();
+    //res.json(group.members)
+      
+ // } catch (err) {
+   //   console.log(err.message);
+     // res.status(500).send('Server Error')
+ // }
+//})
 
 //@ROUTE       PUT '/api/groups/:group_id/addmembers'/ RETURN group.member
 //@DESC        add a member or a list of members(only by admin if group is private)
@@ -145,8 +153,6 @@ router.put('/addmembersbyemail/:id',[auth,[
 router.put('/:id/addmembers',[auth,[
     body('members','No member is Selected').not().isEmpty(),
 ]],async(req,res)=>{
-    console.log(req.body)
-    console.log('we ar in add member endpoint');
     const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
@@ -165,16 +171,22 @@ router.put('/:id/addmembers',[auth,[
  
       const newMembersList = req.body.members.split(',').map(id=>id.trim())
 
+      //check if any of the members is in groups blockList
+      const isSomeoneBlocked = 
+      newMembersList.map(id=>{
+        if(group.blockList.indexOf(id)!==-1){
+            return true
+        }
+    }).indexOf(true)!==-1;
+
+    if(isSomeoneBlocked){
+        return res.status(401).json({errors:[{msg:'At least one of selected users is blocked from the group.First unblock users.'}]});
+    }
+
       //check if any of the members is already in group
       
         const membersList = newMembersList.filter(idx=>group.members.indexOf(idx)===-1);
-
-        //check if any of the members is in groups blockList
-        membersList.forEach(id=>{
-            if(group.blockList.indexOf(id)!==-1){
-                return res.status(401).json({errors:[{msg:'At least one of selected users is blocked from the group.First unblock users.'}]})
-            }
-        })
+        
 
         //add members to group
         group.members.unshift(...membersList)
@@ -203,8 +215,6 @@ router.put('/:id/addmembers',[auth,[
 router.put('/deletemembers/:group_id',[auth,[
     body('users','No Member Is Selected').not().isEmpty(),
 ]],async(req,res)=>{
-    console.log(req.body)
-    console.log('we are here in correct endpoint.delete')
     const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
@@ -251,6 +261,7 @@ router.put('/:id/join',auth,async(req,res)=>{
     try {
         const group = await Group.findById(req.params.id);
         const user = await User.findById(req.user.id);
+        const profile = await Profile.findOne({user:req.user.id});
 
 
         if(!group){
@@ -258,6 +269,10 @@ router.put('/:id/join',auth,async(req,res)=>{
         }
         if(!group.public){
             return res.status(401).json({errors:[{msg:'Not Authorized. Group is Private.'}]})
+        }
+        
+        if(!profile){
+            return res.status(401).json({errors:[{msg:'You have not set up a profile yet.'}]})
         }
 
         //check if user is in blockList of the group
@@ -385,7 +400,7 @@ router.put('/blockusers/:id',[auth,[
         group.blockList.push(...blockList);
         
         await group.save()
-        res.json(group.blockList)
+        res.json(group)
       
   } catch (err) {
       console.log(err.message);
@@ -435,7 +450,7 @@ router.put('/unblockusers/:id',[auth,[
 
         
         await group.save()
-        res.json(group.blockList)
+        res.json(group)
       
   } catch (err) {
       console.log(err.message);

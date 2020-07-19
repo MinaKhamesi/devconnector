@@ -12,7 +12,7 @@ const Group = ({getTheGroup, getPostsOfTheGroup , post:{posts}, group:{group},au
     useEffect(()=>{
         getTheGroup(match.params.id)
         getPostsOfTheGroup(match.params.id);
-    },[getTheGroup,getPostsOfTheGroup]);
+    },[getTheGroup,getPostsOfTheGroup,match.params.id]);
     return (!group || !user || !posts ? <Spinner/> :
         <Fragment>
             <Link to='/groups' className='btn'>Back to Groups</Link>
@@ -25,7 +25,7 @@ const Group = ({getTheGroup, getPostsOfTheGroup , post:{posts}, group:{group},au
             </p>
             <Actions isAdmin={group.admin===user._id} isPublic={group.public} groupId={group._id}/>
             <GroupFormPost groupId={group._id}/>
-            <GroupPosts posts={posts} groupId={group._id}/>
+            <GroupPosts posts={posts} groupId={group._id} isAdmin={group.admin===user._id}/>
             {//   #1Actions #2form-post #3 post}
 }
         </Fragment>

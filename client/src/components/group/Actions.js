@@ -39,7 +39,7 @@ const Actions = ({ isAdmin , isPublic , leaveGroup , groupId , history}) => {
 
         <Link to={`/groups/${groupId}/members/add`} className="btn m-1">
             <i className="fas fa-users text-primary"></i> Add members
-        </Link> 
+        </Link>  
 
         <Link to={`/groups/${groupId}/members/delete`} className="btn m-1">
         Remove members

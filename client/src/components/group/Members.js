@@ -13,7 +13,7 @@ const Members = ({group,profile,auth,match,addMembers, deleteMembers, blockMembe
     useEffect(() => {
             getTheGroup(groupId)
             getAllProfiles()
-    }, [getAllProfiles,getTheGroup])
+    }, [getAllProfiles,getTheGroup,groupId])
 
     const [selected,setSelected] = useState([])
     const [inputShow,setInputShow] = useState([])
@@ -39,6 +39,8 @@ const Members = ({group,profile,auth,match,addMembers, deleteMembers, blockMembe
 
             case 'unblock':
                 return <div onClick={e=>unblockMembers({users:selected.join()},groupId,history)} className="btn btn-dark my-2 p-5" style={{textTransform:'capitalize'}}>{task} Users</div>
+            default:
+                return
         }
     }
 
@@ -63,7 +65,7 @@ const Members = ({group,profile,auth,match,addMembers, deleteMembers, blockMembe
                         setInputShow([...inputShow,profile.user.name])
                     }else{
                         const newNames = inputShow.filter((name,idx)=>selected[idx]!==profile.user._id)
-                        const newSelected = selected.filter(id=>id!=profile.user._id);
+                        const newSelected = selected.filter(id=>id!==profile.user._id);
                         setSelected(newSelected);
                         setInputShow(newNames);
                     }
@@ -85,6 +87,8 @@ const Members = ({group,profile,auth,match,addMembers, deleteMembers, blockMembe
                 return generateCards(profiles.filter(profile=>group.blockList.indexOf(profile.user._id)===-1 && profile.user._id!==group.admin))
             case 'unblock':
                 return generateCards(profiles.filter(profile=>group.blockList.indexOf(profile.user._id)!==-1))
+            default:
+                return
         }
     }
 

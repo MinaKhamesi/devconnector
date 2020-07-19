@@ -1,7 +1,7 @@
 import React,{useEffect,Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Link,Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Spinner from '../layout/Spinner';
 import PostElement from './PostElement';
 import CreateComment from './CreateComment';
@@ -11,7 +11,7 @@ const Post = ({getPostById,deleteComment,post:{post,loading},match,auth}) => {
 
     useEffect(()=>{
         getPostById(match.params.postId)
-    },[getPostById])
+    },[getPostById,match.params.postId])
 
 
 

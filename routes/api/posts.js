@@ -82,6 +82,15 @@ router.delete('/:post_id',auth,async(req,res)=>{
         const post = await Post.findById(req.params.post_id);
 
         if(!post) return res.status(404).json({msg:'Post Not Found!'})
+
+        //if post belong to a group-->>admin can delete it
+        if(post.group){
+            const group = await Group.findById(post.group);
+            if(group && group.admin==req.user.id){
+                await Post.findByIdAndDelete(req.params.post_id);
+                return res.json({msg:"removed!"})
+            }
+        }
         
         //check if user is the owner of post
         if(post.user.toString()!=req.user.id) return res.status(401).json({msg:"not Authorized"});

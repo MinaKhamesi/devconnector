@@ -18,7 +18,7 @@ import Groups from './components/groups/Groups';
 import CreateGroup from './components/groups/CreateGroup';
 import Group from './components/group/Group';
 import Members from './components/group/Members';
-import UserGroups from './components/groups/UserGroups'
+import UserGroups from './components/groups/UserGroups';
 import PrivateRoute from './components/routing/PrivateRoute';
 import './App.css';
 
@@ -26,6 +26,7 @@ import './App.css';
 import store from './store';
 import { loadUser } from './actions/auth';
 import setTokenHeader from './utils/setTokenHeader'
+
 
 
 
@@ -65,6 +66,7 @@ const App = () => {
           <PrivateRoute exact path='/groups/:groupId/members/:task' component= {Members} />
           <PrivateRoute exact path='/post/:groupId/:postId' component= {Post} />
           <PrivateRoute exact path='/user-groups' component= {UserGroups} />
+          
 
           
         </Switch>
