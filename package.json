@@ -3,14 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines":{
+    "node":"10.16.3",
+    "npm":"6.9.0"
+  },
   "scripts": {
     "start": "node server",
+    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false && cd client && npm install && npm run build",
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server \" \"npm run client\""
   },
   "keywords": [],
-  "author": "",
+  "author": "Mina Khamesi",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -1,0 +1,6 @@
+{
+    "mongoURI":"mongodb+srv://mina123:mina123@cluster0-mmbdd.mongodb.net/<dbname>?retryWrites=true&w=majority",
+    "jwtSecret":"ThisIsMySecretMinMin123456",
+    "githubClientId":"6c304463589eb5871343",
+    "githubSecret":"3fb0f54a5f258fa74398c34ff0a93cdb43a0f583"
+}
