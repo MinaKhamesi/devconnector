@@ -10,6 +10,11 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
+    group:{
+        type:Schema.Types.ObjectId,
+        ref:'group',
+        default:null
+    },
     name:String,
     avatar: String,
     likes:[

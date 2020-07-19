@@ -3,6 +3,7 @@ const Post = require('../../models/Post');
 const auth = require('../../middleware/auth');
 const {body,validationResult} = require('express-validator');
 const User = require('../../models/User');
+const Group = require('../../models/Group');
 
 const router = express.Router();
 
@@ -43,7 +44,7 @@ router.post('/',[auth,
 //access    private
 router.get('/',auth,async(req,res)=>{
     try {
-        const posts = await Post.find().sort({date:-1});
+        const posts = await Post.find({group:null}).sort({date:-1});
         res.json(posts)
 
     } catch (err) {
@@ -81,6 +82,15 @@ router.delete('/:post_id',auth,async(req,res)=>{
         const post = await Post.findById(req.params.post_id);
 
         if(!post) return res.status(404).json({msg:'Post Not Found!'})
+
+        //if post belong to a group-->>admin can delete it
+        if(post.group){
+            const group = await Group.findById(post.group);
+            if(group && group.admin==req.user.id){
+                await Post.findByIdAndDelete(req.params.post_id);
+                return res.json({msg:"removed!"})
+            }
+        }
         
         //check if user is the owner of post
         if(post.user.toString()!=req.user.id) return res.status(401).json({msg:"not Authorized"});
@@ -204,6 +214,70 @@ router.delete('/comment/:post_id/:comment_id',auth,async (req,res)=> {
       res.status(500).send('Server Error')
   }
 
+})
+
+///GROUPS:
+
+//@route    POST  /api/posts/groups/:group_id
+//desc     create a post in a group.only members can post on a group
+//@access  private
+router.post('/groups/:id',[auth,
+    body('text','text content is required').notEmpty()
+],async (req,res)=> {
+    const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    const group = await Group.findById(req.params.id);
+    
+    if(!group || !user){
+        return res.status(404).json({errors:[{msg:'Post or User is Invalid'}]})
+    }
+
+    isUserAMember = group.members.indexOf(req.user.id)!=-1;
+    if(!isUserAMember){
+        return res.status(401).json({errors:[{ msg:'Not Authorized. Only members are allowed to post on a group'}]})
+    }
+  const postField = {
+      text:req.body.text,
+      user:req.user.id,
+      name:user.name,
+      avatar:user.avatar,
+      group:req.params.id
+  }
+  
+      const post = new Post(postField);
+      await post.save()
+      res.json(post);
+  } catch (err) {
+      console.log(err.message);
+      res.status(500).send('Server Error')
+  }
+
+})
+
+//route     GET api/posts/groups/:group_id
+//desc      get all posts of a group.only members are allowed to see posts
+//access    private
+router.get('/groups/:id',auth,async(req,res)=>{
+    try {
+        const group = await Group.findById(req.params.id);
+        const posts = await Post.find({group:req.params.id}).sort({date:-1});
+        if(!posts){
+            return res.status(404).json({msg:'No Post Found'})
+        }
+        if(group.members.indexOf(req.user.id)===-1){
+            return res.status(401).json({msg:'You are Not a member of this group.'})
+        }
+        res.json(posts)
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send('Server Error')
+    }
 })
 
 
