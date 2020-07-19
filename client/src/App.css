@@ -166,7 +166,8 @@
 .alert {
   position:fixed;
   right:1rem;
-  top:6rem;
+  width: 70%;
+  top:4rem;
   padding: 0.8rem;
   margin: 1rem;
   opacity: 0.9;
@@ -366,6 +367,13 @@ img {
   justify-content: center;
   text-align: center;
 }
+.dash-buttons{
+  display: flex;
+  flex-wrap: wrap;
+}
+.dash-buttons a{
+  margin: 0.3rem;
+}
 .profile {
   display: -ms-grid;
   display: grid;
@@ -526,6 +534,15 @@ img {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
+.Actions{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.Actions button{
+  margin: 0.2rem;
+}
 
 .group {
   font-size: 1rem;
@@ -566,6 +583,10 @@ img {
   }
   .navbar h1 {
     margin-bottom: 1rem;
+  }
+  .alert{
+    top:6rem;
+    width: 80%;
   }
   .dash-buttons a {
     display: block;
