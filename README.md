@@ -3,10 +3,10 @@ A mini social media application for developers. Users can register, login, make 
 
 There are 4 models in mongoDb(Users, Profiles, Posts and Groups), around 35 end points in Restful API, 35 redux action in frontend.
 
-The application is deployed on herocu.
+The application is deployed to herocu.
 #### [http://devconnector-minakhamesi.herokuapp.com/](http://devconnector-minakhamesi.herokuapp.com/)
 
-![](https://j.gifs.com/MwGq13.gif)
+![](gif(3).gif)
 
 
 
