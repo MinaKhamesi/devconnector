@@ -6,7 +6,7 @@ There are 4 models in mongoDb(Users, Profiles, Posts and Groups), around 35 end 
 The application is deployed to herocu.
 #### [http://devconnector-minakhamesi.herokuapp.com/](http://devconnector-minakhamesi.herokuapp.com/)
 
-![](gif(3).gif)
+![](desktop.gif)
 
 
 
